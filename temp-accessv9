@@ -20,11 +20,50 @@
 ]]--
 local player = game.Players.LocalPlayer
 
-if player.Name == "Felixsdhcdropper4" then
+if player.Name == "Koimi_sAn" then
     print("Whitelisted")
     else
   player:kick ("Wsp shawty. Sorry to interput your time ran out. To buy permanent Anth 1337")
 end
+game.StarterGui:SetCore("SendNotification", { --Loadup Notification
+Title = "Anths Stand",
+Text = "Expiry: 1 Hour",
+Icon = '0',
+Duration = 10;
+})
+game.StarterGui:SetCore("SendNotification", { --Loadup Notification
+Title = "Anths Stand",
+Text = "Auth: Enabled",
+Icon = '0',
+Duration = 10;
+})
+game.StarterGui:SetCore("SendNotification", { --Loadup Notification
+Title = "Anths Stand",
+Text = "Have a good time!",
+Icon = '0',
+Duration = 10;
+})
+wait(5)
+game.StarterGui:SetCore("SendNotification", { --Loadup Notification
+Title = "Anths Stand",
+Text = "Loading..",
+Icon = '0',
+Duration = 5;
+})
+wait(5)
+game.StarterGui:SetCore("SendNotification", { --Loadup Notification
+Title = "Anths Stand",
+Text = "Successfully Loaded.",
+Icon = '0',
+Duration = 1;
+}) 
+wait(5)
+game.StarterGui:SetCore("SendNotification", { --Loadup Notification
+Title = "Anths Stand",
+Text = "Smite Script Status: Disabled",
+Icon = '0',
+Duration = 10;
+}) 
 getgenv().Settings = {
     ['Made By JoJo#2494'] = { -- Anth's Alt // Smite
         OWNER = "Koimi_sAn", --/ Stand owner username.
