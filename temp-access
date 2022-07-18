@@ -1,0 +1,334 @@
+--[[ For any template shares, Please make sure to include a list of the abilities inside the template as follows :
+    --/ Abilities don't support /e prefix
+    Summon! --/ Summons the stand.
+    Vanish! --/ Desummons the stand.
+    Rejoin! --/ Rejoins.
+    Leave! --/ Leaves.
+    Barrage! & Ora! --/ Barrages infront of you.
+    Aura! --/ Goes below you and begins hitting in a circle.
+    Bring! {name} --/ Brings person.
+    Kill! {name} --/ Begins spawn killing the person.
+    Save! --/ Saves the owner if KO'ED.
+    Mimic! --/ Mimics the owner's movements {Block, Punch}.
+    Drop! --/ Drops the carried person.
+    Left! --/ Stand position change.
+    Right! --/ Stand position change.
+    Reset! --/ Resets the stand.
+    Heavy! --/ Attack mode.
+    Light! --/ Attack mode.
+    Smite! --/ Smite cannot be done.
+]]--
+getgenv().Settings = {
+    ['Made By JoJo#2494'] = { -- Anth's Alt // Smite
+        OWNER = "Koimi_sAn", --/ Stand owner username.
+        STANDS = {"finnagofasterinyou"}, --/ List of your stand accounts (if you have more than one you can add more usernames to the table).
+        FPS = 60, --/ Will control FPS can improve the overall performance on both instances when set to lower.
+        PERFORMANCE = false, --/ If set to true it'll significantly improve your overall FPS if you're struggling with performance.
+        NOCLIP = {SynapseX = false, Offset = -3.05}, --/ Offset will control the height of normal noclip (keep unchanged unless you're using titan with a big character / SynapseX option).
+        FACELESS = true, --/ If you want to remove your face.
+        TRAILS = true, --/ If you want to remove the white trail when charge attacking.
+        LEGS = false, --/ If set to true it'll remove your legs.
+        ANTIFLING = true, --/ If set to true you can't get flinged nor can you fling anyone.
+        TELEPORTMAIN = true, --/ Teleports to the stand user
+        RANGE = 50, --/ Controls the melee reach range (50 is max).
+        TITAN = {ENABLED = true, DEFAULT = false, TALL = false, WIDE = true, GODV3 = false}, --/ If enabled you will become a titan stand, if you enable god you need to execute before load for it to work (also can be used with titan disabled).
+        FOLLOWANIM = {true, ID = 3541044388, SPEED = 0.25}, --/ If set to true will play the desired animation when moving (Default animation is heavily advised), SPEED will control the speed (Recommended is 0.25).
+        AUTOPICKUPCASH = true, --/ If set to true will automatically pick up cash when you're near it & should not be used if your dropping cash.
+        ANTIBAN = true, --/ If set to true the stand will be automatically kicked from the server, in-case da hood staff is detected on the same server.
+    }
+}
+--//--------------------------------------------------------------------------------------------\\-- 
+loadstring(game:HttpGet("https://raw.githubusercontent.com/JOJOGIO/STAND-FRAMEWORK/main/v.1.0.9"))()
+--/---------------------------------------------------------------------------------------------\--/ Variables go below this :
+Side = false
+Mode = false
+--/---------------------------------------------------------------------------------------------\--/ CreateAction goes below this :
+CreateAction("Summoned", function() 
+    if Side == false then
+        MoveTo(1,1.85,2.5)
+    else
+        MoveTo(-1,1.85,2.5)
+    end
+end)    
+
+CreateAction("Barrage", function()
+    if STAND.Character.HumanoidRootPart then
+        if OWNER.Character.HumanoidRootPart then
+            MoveTo(0,0.85,-4.85)
+            if STAND.Character:FindFirstChild("Combat") then
+                wait(0.1)
+                if Mode == false then 
+                    Hit(false)
+                else
+                    Hit(true)
+                end
+            else
+                Equip("Combat")
+                wait(0.1)
+                if Mode == false then 
+                    Hit(false)
+                else
+                    Hit(true)
+                end
+            end
+        end
+    end
+end)
+
+CreateAction("Aura", function() 
+    wait()
+    if OWNER.Character.Humanoid.FloorMaterial == Enum.Material.Air then 
+        MoveTo(0,-20,0)
+        wait(0.1)                    
+        if Mode == false then 
+            Hit(false)
+        else
+            Hit(true)
+        end
+    elseif OWNER.Character.Humanoid.FloorMaterial ~= Enum.Material.Air then
+        MoveTo(0 + math.random(-8.5,8.5),-10,0 + math.random(-8.5,8.5))
+        wait(0.1)
+        if Mode == false then 
+            Hit(false)
+        else
+            Hit(true)
+        end
+    else
+        MoveTo(0,-25,0)
+    end
+end)   
+
+CreateAction("Save", function()
+       Stand.Action = "" 
+       repeat wait()
+        if OWNER.Character.BodyEffects["K.O"].Value == false then
+            STAND.Character.HumanoidRootPart.CFrame = OWNER.Character.UpperTorso.CFrame
+        elseif OWNER.Character.BodyEffects["K.O"].Value == true then 
+            wait(0.5)
+            STAND.Character.HumanoidRootPart.CFrame = CFrame.new(OWNER.Character.UpperTorso.Position.X , OWNER.Character.UpperTorso.Position.Y +0.5, OWNER.Character.UpperTorso.Position.Z )
+            wait(0.5)
+            if STAND.Character.BodyEffects["Grabbed"].Value == nil then
+                wait(0.9)
+                game:GetService("ReplicatedStorage").MainEvent:FireServer("Grabbing", true)
+            end
+        end
+        until Stand.Action == "Summoned" or Target == nil or not Target.Character.BodyEffects:FindFirstChild("K.O") or not Target.Character.BodyEffects:FindFirstChild("Defense") or STAND.Character.BodyEffects["Grabbed"].Value ~= nil 
+    STAND.Character.HumanoidRootPart.CFrame = CFrame.new(-205.789703, 160.413025, 1.48631835)
+    wait(1)
+    game:GetService("ReplicatedStorage").MainEvent:FireServer("Grabbing", false)
+    wait(2)
+    Stand.Action = "Summoned"
+end)
+
+CreateAction("Mimic!", function()
+    if OWNER.Character.BodyEffects.Attacking.Value == true then
+        game:GetService("RunService").Stepped:Wait()
+        AnimStop(2788354405,1)
+        MoveTo(0,1,-6)     
+        wait(0.1) 
+        if Mode == false then 
+            Hit(false)
+        else
+            Hit(true)
+        end
+        wait()
+    elseif OWNER.Character.BodyEffects:FindFirstChild("Block") then
+        game:GetService("RunService").Stepped:Wait()
+        MoveTo(0,1.15,-5)
+        AnimPlay(2788354405,1)
+    else
+        AnimStop(2788354405)
+        if Side == false then
+            MoveTo(1,1.85,2.5)
+        else
+            MoveTo(-1,1.85,2.5)
+        end
+    end
+end)
+--/---------------------------------------------------------------------------------------------\--/ Create & CreateTargetAbility & CreateLoop goes below this :
+Create("Mimic!", function() 
+    Stand.Action = "Mimic!"
+end) 
+
+Create("Save!", function ()
+    Stand.Action = "Save"
+end)
+
+Create("Leave!", function() 
+    game:Shutdown()
+end)
+
+Create("Barrage!", function()
+    Stand.Action = "Barrage"
+end)
+
+Create("Ora!", function()
+    Stand.Action = "Barrage"
+end)
+
+Create('Aura!', function()
+    Stand.Action = "Aura"
+end)
+
+Create("Drop!", function()
+	game:GetService("ReplicatedStorage").MainEvent:FireServer("Grabbing", false)
+end)
+
+Create("Anth Over Heaven!", function()
+    pcall(function()
+        game:GetService("RunService"):UnbindFromRenderStep("TARGETKILL")
+		game:GetService("RunService"):UnbindFromRenderStep("GRAB")
+        Stop()
+    end)
+    MoveTo(0,-0.7,1.45)
+    wait(0.05)
+    MoveTo(0,-0.7,1.45)
+    wait(0.05)
+    Stand.Action = "Summoned"
+end)
+
+Create("Vanish!", function()
+    pcall(function()
+        Stop()
+    end)
+    Stand.Action = "" 
+    MoveTo(0,-0.7,1.45)
+    wait(0.08)
+    MoveTo(0,-100,0)
+end)
+
+Create("Rejoin!", function()
+    game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, game.JobId, STAND)
+end)
+
+Create("Left!", function()
+    Side = false
+end)
+
+Create("Right!", function()
+    Side = true
+end)
+
+Create("Light!", function()
+    Mode = false
+end)
+
+Create("Heavy!", function()
+    Mode = true
+end)
+
+Create("Crew!", function()
+    local CurrentCrew = STAND:WaitForChild('DataFolder').Information.Crew
+    local CurrentOwnerCrew = OWNER:WaitForChild('DataFolder').Information.Crew
+    if CurrentCrew.Value == CurrentOwnerCrew.Value then
+        Crew(false)
+    else
+        Crew(true,tonumber(CurrentOwnerCrew.Value))
+    end
+end)
+
+Create("Reset!", function()
+    for i,v in pairs(STAND.Character:GetChildren()) do
+    if v:IsA("BasePart") then v:Destroy() end end
+    game:GetService("RunService"):UnbindFromRenderStep("TARGETKILL")
+    game:GetService("RunService"):UnbindFromRenderStep("GRAB")
+    Stand.Action = ""
+end)
+Create("Yare Yare Da..", function() --/ Inside the " " we have named this ability Yare Yare Da.., So if we were to type Yare Yare Da.. in-game the command would run utilizing function (1)
+    Play(8404024444,true) --/ This is how we play different music ID's utilizing function (8).
+end) --/ Still remember end)
+Create("Anth Over Heaven!", function() --/ Inside the " " we have named this ability Yare Yare Da.., So if we were to type Yare Yare Da.. in-game the command would run utilizing function (1)
+    Play(5684695930,true)--/ This is how we play different music ID's utilizing function (8).
+end) --/ Still remember end)) --/ Still remember end)
+Create("Hello", function() --/ Inside the " " we have named this ability Hello!, So if we were to type Hello! in-game the command would run utilizing function (1), You can rename the Hello! to anything you want.
+    Chat("Hello Anth.") --/ We will make the STAND say Hello!, Utilizing function (13).
+end)
+Create("Anth Over Heaven!", function() --/ Inside the " " we have named this ability Hello!, So if we were to type Hello! in-game the command would run utilizing function (1), You can rename the Hello! to anything you want.
+    Chat("Anth, What can I do for you?") --/ We will make the STAND say Hello!, Utilizing function (13).
+end)
+Create("kill!", function() --/ Inside the " " we have named this ability Hello!, So if we were to type Hello! in-game the command would run utilizing function (1), You can rename the Hello! to anything you want.
+    Chat("I will now kill the specified user.") --/ We will make the STAND say Hello!, Utilizing function (13).
+end)
+Create("bring!", function() --/ Inside the " " we have named this ability Hello!, So if we were to type Hello! in-game the command would run utilizing function (1), You can rename the Hello! to anything you want.
+    Chat("I will now bring the specified user.") --/ We will make the STAND say Hello!, Utilizing function (13).
+end)
+Create("smite!", function() --/ Inside the " " we have named this ability Hello!, So if we were to type Hello! in-game the command would run utilizing function (1), You can rename the Hello! to anything you want.
+    Chat("Alyssa is targeted to be smited. Do you wish to continue?") --/ We will make the STAND say Hello!, Utilizing function (13).
+end) --/ Always remember end) on any ability you created.
+--/ Always remember end) on any ability you created.
+
+CreateTargetAbility("Kill!", function()
+    local Target = Stand.Target
+    if Target then
+    Stand.Action = ""
+    game:GetService("RunService"):BindToRenderStep("TARGETKILL", -1 , function()
+    if Target and Target.Character and Target.Character:FindFirstChild("BodyEffects") and Target.Character.BodyEffects:FindFirstChild("K.O") then
+        if Target.Character.BodyEffects["K.O"].Value == true then
+			STAND.Character.HumanoidRootPart.CFrame = CFrame.new(Target.Character.UpperTorso.Position.X , Target.Character.UpperTorso.Position.Y + 1, Target.Character.UpperTorso.Position.Z )
+			game:GetService("ReplicatedStorage").MainEvent:FireServer("Stomp")
+        else
+            MoveTo(0,-10,0)
+                if STAND.Character:FindFirstChildWhichIsA("Tool") then
+                    if Mode == false then 
+                        Hit(false)
+                    else
+                        Hit(true)
+                    end
+                    wait(0.1)
+                else
+                    Equip("Combat")
+                    if Mode == false then 
+                        Hit(false)
+                    else
+                        Hit(true)
+                    end
+                    wait(0.1)
+                end
+             end
+          end
+  	  end)
+	end
+end)
+
+CreateTargetAbility("Bring!", function()
+    local Target = Stand.Target
+    if Target then
+    Stand.Action = ""
+    game:GetService("RunService"):BindToRenderStep("GRAB", -1 , function()
+    if Target and Target.Character and Target.Character:FindFirstChild("BodyEffects") and Target.Character.BodyEffects:FindFirstChild("K.O") then
+    if Target.Character.BodyEffects["K.O"].Value == true then
+        STAND.Character.HumanoidRootPart.CFrame = CFrame.new(Target.Character.UpperTorso.Position.X , Target.Character.UpperTorso.Position.Y + 1, Target.Character.UpperTorso.Position.Z )
+        if STAND.Character.BodyEffects["Grabbed"].Value == nil then
+            game:GetService("VirtualInputManager"):SendKeyEvent(true,"G",false,game)
+        end
+    end
+    if Target.Character.BodyEffects["K.O"].Value == false then
+        MoveTo(0,-6,0)
+                if STAND.Character:FindFirstChildWhichIsA("Tool") then
+                    if Mode == false then 
+                        Hit(false)
+                    else
+                        Hit(true)
+                    end
+                    wait(0.1)
+                else
+                    Equip("Combat")
+                    if Mode == false then 
+                        Hit(false)
+                    else
+                        Hit(true)
+                    end
+                    wait(0.1)
+                end
+            end
+                if Target == nil or STAND.Character.BodyEffects["Grabbed"].Value ~= nil then
+                    game:GetService("RunService"):UnbindFromRenderStep("GRAB")
+                    Stand.Action = "Summoned"
+                    wait(0.5)
+                    game:GetService("VirtualInputManager"):SendKeyEvent(true,"G",false,game)
+
+                end
+            end
+        end)
+    end
+end)	
