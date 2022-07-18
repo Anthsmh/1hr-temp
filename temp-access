@@ -18,6 +18,13 @@
     Light! --/ Attack mode.
     Smite! --/ Smite cannot be done.
 ]]--
+local player = game.Players.LocalPlayer
+
+if player.Name == "Felixsdhcdropper4" then
+    print("Whitelisted")
+    else
+  player:kick ("Times Up! Buy Permanent! Anth 1337")
+end
 getgenv().Settings = {
     ['Made By JoJo#2494'] = { -- Anth's Alt // Smite
         OWNER = "Koimi_sAn", --/ Stand owner username.
