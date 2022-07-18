@@ -66,7 +66,7 @@ Duration = 10;
 }) 
 getgenv().Settings = {
     ['Made By JoJo#2494'] = { -- Anth's Alt // Smite
-        OWNER = "Koimi_sAn", --/ Stand owner username.
+        OWNER = "Jrobinhardin15", --/ Stand owner username.
         STANDS = {"finnagofasterinyou"}, --/ List of your stand accounts (if you have more than one you can add more usernames to the table).
         FPS = 60, --/ Will control FPS can improve the overall performance on both instances when set to lower.
         PERFORMANCE = false, --/ If set to true it'll significantly improve your overall FPS if you're struggling with performance.
