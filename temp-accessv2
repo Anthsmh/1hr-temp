@@ -20,7 +20,7 @@
 ]]--
 local player = game.Players.LocalPlayer
 
-if player.Name == "Koimi_sAn" then
+if player.Name == "JenniferDaniel6" then
     print("Whitelisted")
     else
   player:kick ("Wsp shawty. Sorry to interput your time ran out. To buy permanent Anth 1337")
